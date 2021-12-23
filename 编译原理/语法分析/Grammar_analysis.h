@@ -25,6 +25,9 @@ private:
     void passParaList();  // 参数表
     void passMain();     // 主函数
     void passCompound();
+    void passStatements(); // 语句列
+    void passStatement();
+    void passConditional();
 
 public:
     Grammar_analysis (Lexical_analysis &lexical_analysis, ofstream &ofs);  //构造函数

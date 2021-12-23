@@ -344,7 +344,116 @@ void Grammar_analysis::passCompound(){
 	}
 	if (isval) {  fout << "<变量说明>" << endl; }
 	// 语句列
-	//passStatements();
+    passStatements();
 	fout << "<复合语句>" << endl;
 
 }
+
+// 语句列
+void Grammar_analysis::passStatements(){
+    // 当符合进入语句的条件时，进入语句
+    // 及当前字符在语句的select集中
+    while (symbolType == IFTK || symbolType == WHILETK || symbolType == DOTK ||
+		symbolType == FORTK || symbolType == LBRACE || symbolType == IDENFR ||
+		symbolType == SCANFTK || symbolType == PRINTFTK ||
+		symbolType == RETURNTK || symbolType == SEMICN) {
+		passStatement();
+	}
+	fout << "<语句列>" << endl;
+}
+
+
+// 语句
+
+void Grammar_analysis::passStatement(){
+    
+    // 条件语句
+  	if (symbolType == IFTK) {
+		passConditional();
+		fout << "<语句>" << endl;
+		return;
+	}
+    
+    // 循环语句
+	else if (symbolType == WHILETK || symbolType == DOTK || symbolType == FORTK) {
+		passLoop();
+		fout << "<语句>" << endl;
+		return;
+	}
+	else if (symbolType == LBRACE) {  //为'{'时仍是语句列
+		getSymbol();
+		//语句列
+		passStatements();
+        // 应为'}'
+		if (symbolType != RBRACE) { fout<<"syntax error";exit(0); }
+		getSymbol();
+		fout << "<语句>" << endl;
+		return;
+	}
+	else if (symbolType == IDENFR) {
+		getSymbol();
+        // 统一分析有/无返回值函数调用语句
+		if (symbolType == LPARENT) {
+			passFun_call();
+		}
+		else if (symbolType == ASSIGN || symbolType == LBRACK) {
+			// 赋值语句
+			passAssign(idenfr);
+		}
+		else { fout << "<变量说明>" << endl;  }
+	}
+	else if (symbolType == SCANFTK) {// 读语句
+		
+		passScanf();
+	}
+	else if (symbolType == PRINTFTK) {// 写语句
+		
+		passPrintf();
+	}
+	else if (symbolType == RETURNTK) {// 返回语句
+		
+		passReturn();
+	}
+	if (symbolType != SEMICN) { fout<<"syntax error";exit(0); }
+	else {
+		getSymbol();
+	}
+	
+	fout << "<语句>" << endl;
+}
+
+
+// 条件语句
+void Grammar_analysis::passConditional() {
+	string con;
+
+    //应是'if'
+	if (symbolType != IFTK) {  fout<<"syntax error";exit(0); }
+	getSymbol();
+     
+    //应是'('
+	if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+	getSymbol();
+    
+    // 条件
+	passCondition();
+    
+
+    //应是')'
+	if (symbolType != RPARENT) {fout<<"syntax error";exit(0); }
+	else {
+		getSymbol();
+	}
+    
+    //语句
+	passStatement();
+    
+
+	if (symbolType == ELSETK) {
+		
+		getSymbol();
+		passStatement();
+	}
+	fout << "<条件语句>" << endl;
+}
+
