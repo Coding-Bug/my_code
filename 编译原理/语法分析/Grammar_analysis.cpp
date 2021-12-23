@@ -21,26 +21,31 @@ void Grammar_analysis::getSymbol(){
     if (lexical_analysis->getSymbol() != FINISH) {
         lexical_analysis->nextSymbol();
         symbolType=lexical_analysis->getSymbol();
+        word=lexical_analysis->save();
 	}
 }
 
 // 程序的分析
 void Grammar_analysis::passProgram(){
     bool isval = false;
+    
     // 处理常量说明
     if (symbolType == CONSTTK) {
-        //passConst();
+        passConst();
     }
     // 处理变量说明和第一个有返回值函数定义
     // 变量说说明
     if (symbolType == INTTK || symbolType == CHARTK) {
+       
         getSymbol();
+
         if (symbolType == IDENFR) {
             getSymbol();
             // 进入变量说明分支
             while (symbolType == COMMA || symbolType == SEMICN || symbolType == LBRACK) {
                 isval = true;   // 有变量说明
-                //passVar();   // 进入变量定义
+
+                passVar();   // 进入变量定义
                 // 继续判断还有没有变量
                 if (symbolType == INTTK || symbolType == CHARTK) {
                     getSymbol();
@@ -161,4 +166,40 @@ void Grammar_analysis::passConst() {
         fout << "<常量说明>" << endl;
         return;
     }
+}
+
+
+// type是分析的变量的类型
+void Grammar_analysis::passVar(int type){
+
+    while (symbolType == SEMICN || symbolType == COMMA || symbolType == LBRACK) {
+        //标志为';'时变量定义结束
+        if (symbolType == SEMICN) {
+            // 一遍变量定义结束
+            fout << "<变量定义>" << endl;
+            getSymbol();
+            return;
+        }
+        else if (symbolType == COMMA) {  //标志为','
+    
+            getSymbol();
+            if (symbolType == IDENFR) {
+                getSymbol();
+                // 变量定义大括号循环
+            }
+            else {  fout<<"syntax error";exit(0); }// ','后要跟标识符，否则报错
+        }
+        else if (symbolType == LBRACK) { // 标志为'['
+            getSymbol();
+            // 数组的元素要为大于0的无符号整数
+            if (symbolType != INTCON || word == "0") { fout<<"syntax error";exit(0); }
+            getSymbol();
+            if (symbolType == RBRACK) {
+                getSymbol();
+                // 变量定义大括号循环
+            }        
+            else { fout<<"syntax error";exit(0); }//整数后非']'，则数组定义错误
+        }
+    }
+    fout<<"syntax error";exit(0);  // 变量定义失败
 }

@@ -12,13 +12,14 @@ class Grammar_analysis{
 private:
     Lexical_analysis* lexical_analysis;
     ofstream& fout;
-    SymbolType symbolType;  
+    SymbolType symbolType;
+    string word;  
 
 
     // 各种分析
     void passProgram();  // 处理主程序
     void passConst();    // 处理常量说明
-
+    void passVar();      // 处理变量定义
     
 
 
