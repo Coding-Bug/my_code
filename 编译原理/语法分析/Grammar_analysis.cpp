@@ -21,7 +21,7 @@ void Grammar_analysis::getSymbol(){
     if (lexical_analysis->getSymbol() != FINISH) {
         lexical_analysis->nextSymbol();
         symbolType=lexical_analysis->getSymbol();
-        word=lexical_analysis->save();
+        word=lexical_analysis->save;
 	}
 }
 
@@ -70,7 +70,6 @@ void Grammar_analysis::passProgram(){
         }
         else { fout<<"syntax error";exit(0); }// int和char后跟的不是标识符，则报错
     }
-
     // 处理有、无返回值的函数定义和主函数
     while (symbolType == VOIDTK || symbolType == INTTK || symbolType == CHARTK) {
         // 无返回值函数定义
@@ -170,8 +169,7 @@ void Grammar_analysis::passConst() {
 
 
 // type是分析的变量的类型
-void Grammar_analysis::passVar(int type){
-
+void Grammar_analysis::passVar(){
     while (symbolType == SEMICN || symbolType == COMMA || symbolType == LBRACK) {
         //标志为';'时变量定义结束
         if (symbolType == SEMICN) {
@@ -181,7 +179,6 @@ void Grammar_analysis::passVar(int type){
             return;
         }
         else if (symbolType == COMMA) {  //标志为','
-    
             getSymbol();
             if (symbolType == IDENFR) {
                 getSymbol();
@@ -202,4 +199,36 @@ void Grammar_analysis::passVar(int type){
         }
     }
     fout<<"syntax error";exit(0);  // 变量定义失败
+}
+
+
+void Grammar_analysis::passFun_return(){
+    // 本分析从声明头部进入，先输出声明头部
+    fout << "<声明头部>" << endl;
+    
+    //声明头部后面应该跟'('
+    if (symbolType != LPARENT) { fout<<"syntax error";exit(0); } 
+    getSymbol();
+    
+
+    // 判断参数表
+    //passParaList(idenfr);
+    
+    // 参数表后是')'
+    if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
+    else {
+        getSymbol();
+    }
+    
+    //接着是'{'
+    if (symbolType != LBRACE) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+    //复合语句
+    //passCompound();
+
+    if (symbolType != RBRACE) { fout<<"syntax error";exit(0); }
+    
+    fout << "<有返回值函数定义>" << endl;
+    getSymbol(); //接受下一个
 }
