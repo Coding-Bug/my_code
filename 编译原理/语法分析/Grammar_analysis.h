@@ -21,7 +21,7 @@ private:
     void passConst();    // 处理常量说明
     void passVar();      // 处理变量定义
     void passFun_return();  // 处理有返回值的函数定义
-    
+    void passFun_void();  //无返回值的函数定义
 
 
 public:

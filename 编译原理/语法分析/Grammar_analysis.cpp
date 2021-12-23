@@ -65,7 +65,7 @@ void Grammar_analysis::passProgram(){
             // 因为有可能根本没有变量说明，这时候可能会有（有返回值函数）
             if (symbolType == LPARENT) {
                 if (isval) { fout << "<变量说明>" << endl; }
-                //passFun_return();
+                passFun_return();
             }
         }
         else { fout<<"syntax error";exit(0); }// int和char后跟的不是标识符，则报错
@@ -201,7 +201,8 @@ void Grammar_analysis::passVar(){
     fout<<"syntax error";exit(0);  // 变量定义失败
 }
 
-
+// 有返回值的函数定义
+// 待修改
 void Grammar_analysis::passFun_return(){
     // 本分析从声明头部进入，先输出声明头部
     fout << "<声明头部>" << endl;
@@ -231,4 +232,35 @@ void Grammar_analysis::passFun_return(){
     
     fout << "<有返回值函数定义>" << endl;
     getSymbol(); //接受下一个
+}
+
+// 无返回值的函数定义
+void Grammar_analysis::passFun_void(){
+
+    string name = word;
+    // void 后面是标识符
+    if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+    // 与有返回差不多
+
+    if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+    //passParaList(); // 参数表
+
+    if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
+    else {
+        getSymbol();
+    }
+
+    if (symbolType != LBRACE) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+    //isCompound(); 复合语句
+
+    if (symbolType != RBRACE) {fout<<"syntax error";exit(0); }
+   
+    fout << "<无返回值函数定义>" << endl;
+    getSymbol();
 }
