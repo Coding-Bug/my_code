@@ -264,3 +264,31 @@ void Grammar_analysis::passFun_void(){
     fout << "<无返回值函数定义>" << endl;
     getSymbol();
 }
+
+
+// 参数表
+void Grammar_analysis::passParaList(){
+    
+    string type;
+    while (symbolType == INTTK || symbolType == CHARTK) {
+        type = word;
+        getSymbol();
+        
+        // 应是标识符
+        if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+       
+        getSymbol();
+        // 后面没参数了
+        if (symbolType != COMMA) {
+            fout << "<参数表>" << endl;
+            return;
+        }
+        getSymbol();
+    }
+    if (symbolType == RPARENT) {  // 参数为空
+        fout << "<参数表>" << endl;
+    }
+    else{
+        fout<<"syntax error";exit(0);
+    }
+}
