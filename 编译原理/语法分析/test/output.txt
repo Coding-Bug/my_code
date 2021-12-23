@@ -1,0 +1,132 @@
+CONSTTK const
+aaa
+INTTK int
+aaa
+IDENFR const1
+aaa
+ASSIGN =
+aaa
+INTCON 1
+aaa
+COMMA ,
+aaa
+IDENFR const2
+aaa
+ASSIGN =
+aaa
+MINU -
+aaa
+INTCON 100
+aaa
+SEMICN ;
+aaa
+CONSTTK const
+aaa
+CHARTK char
+aaa
+IDENFR const3
+aaa
+ASSIGN =
+aaa
+CHARCON _
+aaa
+SEMICN ;
+aaa
+INTTK int
+aaa
+IDENFR change1
+aaa
+SEMICN ;
+aaa
+CHARTK char
+aaa
+IDENFR change3
+aaa
+SEMICN ;
+aaa
+INTTK int
+aaa
+IDENFR gets1
+aaa
+LPARENT (
+aaa
+INTTK int
+aaa
+IDENFR var1
+aaa
+COMMA ,
+aaa
+INTTK int
+aaa
+IDENFR var2
+aaa
+RPARENT )
+aaa
+LBRACE {
+aaa
+IDENFR change1
+aaa
+ASSIGN =
+aaa
+IDENFR var1
+aaa
+PLUS +
+aaa
+IDENFR var2
+aaa
+SEMICN ;
+aaa
+RETURNTK return
+aaa
+LPARENT (
+aaa
+IDENFR change1
+aaa
+RPARENT )
+aaa
+SEMICN ;
+aaa
+RBRACE }
+aaa
+VOIDTK void
+aaa
+MAINTK main
+aaa
+LPARENT (
+aaa
+RPARENT )
+aaa
+LBRACE {
+aaa
+PRINTFTK printf
+aaa
+LPARENT (
+aaa
+STRCON Hello World
+aaa
+RPARENT )
+aaa
+SEMICN ;
+aaa
+PRINTFTK printf
+aaa
+LPARENT (
+aaa
+IDENFR gets1
+aaa
+LPARENT (
+aaa
+INTCON 10
+aaa
+COMMA ,
+aaa
+INTCON 20
+aaa
+RPARENT )
+aaa
+RPARENT )
+aaa
+SEMICN ;
+aaa
+RBRACE }
+aaa

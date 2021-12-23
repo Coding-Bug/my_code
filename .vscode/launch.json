@@ -6,6 +6,7 @@
     "configurations": [
         {
             "name": "cpp.exe - 生成和调试活动文件",
+            
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
