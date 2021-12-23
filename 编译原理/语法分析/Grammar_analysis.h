@@ -23,7 +23,7 @@ private:
     void passFun_return();  // 处理有返回值的函数定义
     void passFun_void();  //无返回值的函数定义
     void passParaList();  // 参数表
-
+    void passMain();     // 主函数
 
 public:
     Grammar_analysis (Lexical_analysis &lexical_analysis, ofstream &ofs);  //构造函数

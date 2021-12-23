@@ -292,3 +292,32 @@ void Grammar_analysis::passParaList(){
         fout<<"syntax error";exit(0);
     }
 }
+
+void Grammar_analysis::passMain(){
+   
+     
+     // 'main'
+    if (symbolType != MAINTK) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+
+    //'('
+    if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+    getSymbol();
+    
+    //')'
+    if (symbolType != RPARENT) {fout<<"syntax error";exit(0); }
+    else {
+        getSymbol();
+    }
+    
+    //'{'
+    if (symbolType != LBRACE) { fout<<"syntax error";exit(0); }
+    getSymbol();
+
+    // 符合语句
+    //passCompound();
+
+    if (symbolType != RBRACE) { fout<<"syntax error";exit(0); }
+    fout << "<主函数>" << endl;
+}
