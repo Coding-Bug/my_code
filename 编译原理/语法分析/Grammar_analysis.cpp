@@ -457,3 +457,181 @@ void Grammar_analysis::passConditional() {
 	fout << "<条件语句>" << endl;
 }
 
+
+// 循环语句
+void Grammar_analysis::passLoop(){
+
+	// while语句
+	if (symbolType == WHILETK) {
+		
+		getSymbol();
+
+		if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+		getSymbol();
+
+		// 条件
+		passCondition();
+
+		if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
+		else {
+			getSymbol();
+		}
+
+	    //  语句
+		passStatement();
+	
+	}
+	else if (symbolType == DOTK) {  // do语句
+		getSymbol();
+        
+		// 语句
+		passStatement();
+        
+
+		// 语句后应该是while
+		if (symbolType != WHILETK) {
+			fout<<"syntax error";exit(0);
+		}
+		else {
+			getSymbol();
+		}
+        // '('
+		if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+		getSymbol();
+
+		passCondition();
+        
+		// ')'
+		if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
+		else {
+			getSymbol();
+		}
+	}
+	else if (symbolType == FORTK) {  // for语句
+		getSymbol();
+        
+		// '('
+		if (symbolType != LPARENT) {fout<<"syntax error";exit(0);}
+		getSymbol();
+       
+	    // 标识符
+		if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+		
+
+		getSymbol();
+        
+		//''
+		if (symbolType != ASSIGN) { fout<<"syntax error";exit(0); }
+		getSymbol();
+        
+		// 表达式
+		passExpression();
+        
+		// ';'
+		if (symbolType != SEMICN) { fout<<"syntax error";exit(0); }
+		else {
+			getSymbol();
+		}
+
+
+		// 条件
+		passCondition();
+
+		
+        // ';'
+		if (symbolType != SEMICN) { fout<<"syntax error";exit(0); }
+		else {
+			getSymbol();
+		}
+        
+		// 标识符
+		if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+		getSymbol(); 
+
+
+        // '='
+		if (symbolType != ASSIGN) { fout<<"syntax error";exit(0); }
+		getSymbol();
+
+        // 标识符
+		if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+		
+		getSymbol();
+        
+		// (+|-)
+		if (symbolType != PLUS && symbolType != MINU) { fout<<"syntax error";exit(0); }
+
+		getSymbol();
+        
+		// 步长
+		if (symbolType != INTCON) { fout<<"syntax error";exit(0); }
+		
+		fout << "<步长>" << endl;
+		getSymbol();
+        
+		//')'
+		if (symbolType != RPARENT) { fout<<"syntax error";exit(0);  }
+		else {
+			getSymbol();
+		}
+         
+		// 语句
+		passStatement();
+	}
+	else { fout<<"syntax error";exit(0); }
+	fout << "<循环语句>" << endl;
+}
+
+
+// 条件
+// 整形表达式之间才能进行关系运算！！！！！！！
+
+
+void Grammar_analysis::passCondition(){
+	int temptype; //表达式的类型  
+	// 表达式
+	passExpression(temptype);
+	if(temptype!=){  // 不等于整形
+    fout<<"syntax error";exit(0);
+	}
+    
+	// 关系运算符
+	if (symbolType >= LSS && symbolType <= NEQ) {
+		
+		passExpression(temptype);
+		if(temptype!=){  // 不等于整形
+        fout<<"syntax error";exit(0);
+	}
+	}
+	fout << "<条件>" << endl;
+}
+
+
+// 读语句
+void Grammar_analysis::passScanf(){
+	
+	if (symbolType != SCANFTK) {fout<<"syntax error";exit(0); }
+	getSymbol();
+    
+	if (symbolType != LPARENT) { fout<<"syntax error";exit(0); }
+	getSymbol();
+
+	if (symbolType != IDENFR) {fout<<"syntax error";exit(0); }
+	
+	getSymbol();
+    
+	//','
+	while (symbolType == COMMA) {
+		getSymbol();
+		if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+		
+		getSymbol();
+	}
+
+	if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
+	else {
+		getSymbol();
+	}
+	fout << "<读语句>" << endl;
+
+}

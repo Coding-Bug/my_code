@@ -24,10 +24,13 @@ private:
     void passFun_void();  //无返回值的函数定义
     void passParaList();  // 参数表
     void passMain();     // 主函数
-    void passCompound();
+    void passCompound(); // 复合语句
     void passStatements(); // 语句列
-    void passStatement();
-    void passConditional();
+    void passStatement();  // 语句
+    void passConditional();// 条件语句
+    void passLoop();       // 循环语句
+    void passCondition();  // 条件
+    void passScanf();      // 读语句
 
 public:
     Grammar_analysis (Lexical_analysis &lexical_analysis, ofstream &ofs);  //构造函数
