@@ -168,7 +168,7 @@ void Grammar_analysis::passConst() {
 }
 
 
-// type是分析的变量的类型
+// 变量定义
 void Grammar_analysis::passVar(){
     while (symbolType == SEMICN || symbolType == COMMA || symbolType == LBRACK) {
         //标志为';'时变量定义结束
@@ -213,7 +213,7 @@ void Grammar_analysis::passFun_return(){
     
 
     // 判断参数表
-    //passParaList(idenfr);
+    passParaList();
     
     // 参数表后是')'
     if (symbolType != RPARENT) { fout<<"syntax error";exit(0); }
@@ -320,4 +320,31 @@ void Grammar_analysis::passMain(){
 
     if (symbolType != RBRACE) { fout<<"syntax error";exit(0); }
     fout << "<主函数>" << endl;
+}
+
+
+// 复合语句
+void Grammar_analysis::passCompound(){
+    bool isval = false;
+
+	string idenfr;
+	// 常量说明
+	if (symbolType == CONSTTK) {
+		passConst();
+	}
+	// 变量定义
+	while (symbolType == INTTK || symbolType == CHARTK) {
+		isval = true; // 标记是变量 
+		getSymbol();
+		if (symbolType != IDENFR) { fout<<"syntax error";exit(0); }
+		getSymbol();
+        
+        // 进入变量定义
+		passVar();
+	}
+	if (isval) {  fout << "<变量说明>" << endl; }
+	// 语句列
+	//passStatements();
+	fout << "<复合语句>" << endl;
+
 }
